@@ -11,8 +11,12 @@ FastAPI, SQLAlchemy, Alembic, PostgreSQL, uv, Render
 ## Features
 - User registration and login (OAuth2 + JWT)
 - CRUD for posts(can create users, authorization required for each post made by a user)
-- Since its only a test, a user can stay logged in for 60 mins after logging in; authorization required again afterwards.
 - Voting on posts
+
+## Working
+- Create user
+- Login using the user creds(important; authorization is only after logging in, not just creating user)
+- A test only => a user can stay logged in for 60 mins after logging in; authorization required again afterwards
 
 ## Run locally
 ```bash
