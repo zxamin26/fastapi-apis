@@ -26,11 +26,11 @@ def upgrade() -> None:
     op.add_column('posts', sa.Column('content', sa.String(), nullable=False))
     op.add_column('posts', sa.Column('posted', sa.Boolean(), server_default='TRUE', nullable=True))
     op.add_column('posts', sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False))
-    op.create_foreign_key(None, 'posts', 'users', ['user_id'], ['id'], ondelete='CASCADE')
+    op.create_foreign_key('fk_posts_user_id_users', 'posts', 'users', ['user_id'], ['id'], ondelete='CASCADE')
     op.add_column('users', sa.Column('email', sa.String(), nullable=False))
     op.add_column('users', sa.Column('password', sa.String(), nullable=False))
     op.add_column('users', sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False))
-    op.create_unique_constraint(None, 'users', ['email'])
+    op.create_unique_constraint('uq_users_email', 'users', ['email'])
     # ### end Alembic commands ###
 
 
@@ -40,14 +40,14 @@ def downgrade() -> None:
     # WARNING: constraint name is None; this directive will fail as
     # rendered.  Add a name, or use a naming convention; see
     # https://alembic.sqlalchemy.org/en/latest/naming.html
-    op.drop_constraint(None, 'users', type_='unique')
+    op.drop_constraint('uq_users_email', 'users', type_='unique')
     op.drop_column('users', 'created_at')
     op.drop_column('users', 'password')
     op.drop_column('users', 'email')
     # WARNING: constraint name is None; this directive will fail as
     # rendered.  Add a name, or use a naming convention; see
     # https://alembic.sqlalchemy.org/en/latest/naming.html
-    op.drop_constraint(None, 'posts', type_='foreignkey')
+    op.drop_constraint("fk_posts_user_id_users", 'posts', type_='foreignkey')
     op.drop_column('posts', 'created_at')
     op.drop_column('posts', 'posted')
     op.drop_column('posts', 'content')
